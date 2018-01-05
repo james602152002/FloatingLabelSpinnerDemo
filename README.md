@@ -86,3 +86,227 @@ dependencies {
 	setError(String error);
 	
 ```
+
+## Demonstration
+
+#### Cache
+
+```java
+    public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private FloatingLabelSpinner spinner;
+    private List<String> data = new ArrayList<>();
+```
+
+#### Init view
+```java
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+    
+            spinner = findViewById(R.id.spinner);
+    
+            final int screen_width = getResources().getDisplayMetrics().widthPixels;
+            final float label_text_size = screen_width / 40;
+            final float hint_text_size = screen_width / 30;
+            final short thickness = (short) (screen_width / 250);
+            spinner.setLabel_text_size(label_text_size);
+            spinner.setHint_text_size(hint_text_size);
+            spinner.setError_text_size(label_text_size);
+            spinner.setThickness(thickness);
+            spinner.setHighlight_color(getResources().getColor(android.R.color.holo_blue_light));
+            spinner.setErrorMargin(0, thickness);
+            spinner.setDropDownHintView(getHintView());
+    
+            //set your hint as ForegroundColorSpan
+            SpannableString span = new SpannableString("Spannable String Label *");
+            span.setSpan(new ForegroundColorSpan(Color.RED), span.length() - 1, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spinner.setHint(span);
+    
+            fetchData();
+    
+            spinner.setAdapter(new CommonMaterialSpinnerAdapter(this, data));
+    
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                }
+    
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+    
+                }
+            });
+    
+            initDivider(thickness);
+            initButton();
+        }
+```
+
+```java
+    private void initDivider(short divider_height) {
+        View divider_1 = findViewById(R.id.divider_1);
+        View divider_2 = findViewById(R.id.divider_2);
+        View divider_3 = findViewById(R.id.divider_3);
+
+        ((LinearLayout.LayoutParams) divider_1.getLayoutParams()).height = divider_height;
+        ((LinearLayout.LayoutParams) divider_2.getLayoutParams()).height = divider_height;
+        ((LinearLayout.LayoutParams) divider_3.getLayoutParams()).height = divider_height;
+    }
+
+    private void initButton() {
+        Button submit_button = findViewById(R.id.submit);
+        submit_button.setOnClickListener(this);
+    }
+
+    /*This method to set your hint view*/
+    public View getHintView() {
+        final int screen_width = getResources().getDisplayMetrics().widthPixels;
+        final float label_text_size = screen_width / 40;
+        final short margins = (short) (screen_width / 40);
+        final short rect_height = (short) (screen_width / 60);
+        View hintView = getLayoutInflater().inflate(R.layout.header_of_spinner, null, false);
+        TextView title = hintView.findViewById(R.id.title);
+        View rect = hintView.findViewById(R.id.rect);
+
+
+        ((RelativeLayout.LayoutParams) rect.getLayoutParams()).height = rect_height;
+        rect.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+        ((RelativeLayout.LayoutParams) title.getLayoutParams()).setMargins(margins, margins , margins, margins);
+        hintView.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+        title.setTextSize(TypedValue.COMPLEX_UNIT_PX, label_text_size);
+        return hintView;
+    }
+```
+
+#### Fetch data
+
+```java
+    private void fetchData() {
+        String itemStr = "Item ";
+        StringBuilder itemBuilder = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            itemBuilder.delete(0, itemBuilder.length());
+            itemBuilder.append(itemStr).append(i);
+            data.add(itemBuilder.toString());
+        }
+    }
+```
+
+#### Customize your adapter
+
+```java
+ /*
+    * Spinner's height depends on getView()'s height,
+    * and dropDownView are items of Dialog.
+    * */
+    class CommonMaterialSpinnerAdapter extends BaseAdapter {
+
+        private final List<String> data;
+        private final LayoutInflater inflater;
+        private final short drop_down_margins;
+        private final short margin;
+        private final float item_text_size;
+
+        public CommonMaterialSpinnerAdapter(Context context, List<String> data) {
+            this.data = data;
+            this.inflater = LayoutInflater.from(context);
+            final int screen_width = getResources().getDisplayMetrics().widthPixels;
+            this.drop_down_margins = (short) (screen_width / 40);
+            this.margin = (short) (screen_width / 75);
+            this.item_text_size = screen_width / 30;
+        }
+
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return initView(position, convertView, true);
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return data != null ? data.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return initView(position, convertView, false);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return true;
+        }
+
+        private View initView(int position, View convertView, boolean drop_down) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.cell_common_spinner_layout, null, false);
+                holder.title = convertView.findViewById(R.id.title);
+                if (drop_down) {
+                    ((LinearLayout.LayoutParams) holder.title.getLayoutParams()).setMargins(drop_down_margins, drop_down_margins, drop_down_margins, drop_down_margins);
+                } else {
+                    ((LinearLayout.LayoutParams) holder.title.getLayoutParams()).setMargins(0, margin, 0, margin);
+                    convertView.setBackgroundColor(0);
+                }
+                holder.title.setTextSize(TypedValue.COMPLEX_UNIT_PX, item_text_size);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.title.setText(data.get(position));
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView title;
+        }
+    }
+```
+
+#### And set your listener to check error status
+
+```java
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.submit:
+                //If your set null to error status will cancel.
+                spinner.setError(TextUtils.isEmpty(spinner.getError()) ? "begin error end" :
+                        "begin error error error error error error error error error error error end");
+                break;
+        }
+    }
+```
