@@ -3,7 +3,7 @@
 ## Reference
 [FloatingLabelSpinner](https://github.com/james602152002/FloatingLabelSpinner)
 
-##Dependency
+## Dependency
 
 ```
 allprojects {
@@ -21,7 +21,7 @@ dependencies {
 }
 ```
 
-##Property
+## Property
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
@@ -60,7 +60,7 @@ dependencies {
           
 ```
 
-##Method
+## Method
 ```java
     //floating label text size
 	setLabel_text_size(float label_text_size);
