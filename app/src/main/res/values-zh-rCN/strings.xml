@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FloatingLabelSpinnerDemo</string>
+    <string name="submit_error">提交错误</string>
+    <string name="first_class_spinner_title">一级标题</string>
+    <string name="second_class_spinner_title">二级标题</string>
+</resources>
