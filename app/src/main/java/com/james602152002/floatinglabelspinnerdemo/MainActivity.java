@@ -27,6 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //Cache
     private FloatingLabelSpinner spinner;
     private List<String> data = new ArrayList<>();
 
