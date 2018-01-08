@@ -2,35 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.7.1.201405082137"   //版本号可用最新
-}
-
-def coverageSourceDirs = [
-        '../app/src/main/java'
-]
-
-task jacocoTestReport(type:JacocoReport, dependsOn: "testDebugUnitTest") {
-    group = "Reporting"
-
-    description = "Generate Jacoco coverage reports"
-
-    classDirectories = fileTree(
-            dir: '../app/build/intermediates/classes/debug',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*']          // 去掉不进行检查的文件
-    )
-
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/testDebugUnitTest.exec')
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
+    toolVersion = "0.8.0"
 }
 
 android {
@@ -52,7 +24,7 @@ android {
         }
 
         debug {
-            testCoverageEnabled = true
+            testCoverageEnabled true
         }
     }
 }
