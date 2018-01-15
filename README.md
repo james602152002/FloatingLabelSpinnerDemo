@@ -64,7 +64,7 @@ dependencies {
 
 ## Method
 ```java
-    //floating label text size
+    	//floating label text size
 	setLabel_text_size(float label_text_size);
 	//hint text size
 	setHint_text_size(float hint_text_size);
@@ -87,15 +87,15 @@ dependencies {
 	//set error text(null for cancel error status)
 	setError(String error);
 	//set float animation duration(unit：ms)
-        	setAnimDuration(short duration)
-        	//set scrolling text animation duration(unit：ms)
-        	setErrorAnimDuration(short duration)
-        	//set recursive mode, if you have many level data to fetch , you can set it true.
-            setRecursive_mode(boolean recursive_mode)
-            //dismiss dialog while recursive mode
-            dismiss()
-            //notify datasetchanged while recursive mode
-            notifyDataSetChanged()/>
+        setAnimDuration(short duration)
+        //set scrolling text animation duration(unit：ms)
+        setErrorAnimDuration(short duration)
+        //set recursive mode, if you have many level data to fetch , you can set it true.
+        setRecursive_mode(boolean recursive_mode)
+        //dismiss dialog while recursive mode
+        dismiss()
+        //notify datasetchanged while recursive mode
+        notifyDataSetChanged()
 	
 ```
 
