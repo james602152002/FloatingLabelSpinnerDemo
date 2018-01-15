@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Cache
     private FloatingLabelSpinner spinner;
     private List<String> data = new ArrayList<>();
+    private CommonMaterialSpinnerAdapter adapter;
+    private int current_node = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spinner.setHint_text_size(hint_text_size);
         spinner.setError_text_size(label_text_size);
         spinner.setThickness(thickness);
-        spinner.setHighlight_color(getResources().getColor(android.R.color.holo_blue_light));
+        spinner.setHighlight_color(Color.parseColor("#FFFF00"));
         spinner.setErrorMargin(0, thickness);
         spinner.setDropDownHintView(getHintView());
 
@@ -54,14 +57,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SpannableString span = new SpannableString("Spannable String Label *");
         span.setSpan(new ForegroundColorSpan(Color.RED), span.length() - 1, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spinner.setHint(span);
-
         fetchData();
 
-        spinner.setAdapter(new CommonMaterialSpinnerAdapter(this, data));
+        adapter = new CommonMaterialSpinnerAdapter(this, data);
+        spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Dismiss spinner when you click drop down hint view header.
+                if (position == 0) {
+                    spinner.dismiss();
+                    return;
+                }
+                switch (current_node) {
+                    case 0:
+                        //Fetch second class data and don't dismiss.
+                        fetch2ndClassData();
+                        break;
+                    case 1:
+                        //When you current in second class just dismiss your dialog.
+                        spinner.dismiss();
+                        return;
+                }
+                current_node++;
+                //Set drop down hint view with back button.
+                spinner.setDropDownHintView(getHintView());
             }
 
             @Override
@@ -74,7 +95,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initButton();
     }
 
+    //fetch level 1 class
     private void fetchData() {
+        data.clear();
         String itemStr = "Item ";
         StringBuilder itemBuilder = new StringBuilder();
         for (int i = 0; i < 5; i++) {
@@ -82,6 +105,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             itemBuilder.append(itemStr).append(i);
             data.add(itemBuilder.toString());
         }
+        spinner.notifyDataSetChanged();
+    }
+
+    //fetch level 2 class
+    private void fetch2ndClassData() {
+        data.clear();
+        String itemStr = "2nd class item ";
+        StringBuilder itemBuilder = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            itemBuilder.delete(0, itemBuilder.length());
+            itemBuilder.append(itemStr).append(i);
+            data.add(itemBuilder.toString());
+        }
+        spinner.notifyDataSetChanged();
     }
 
     private void initDivider(short divider_height) {
@@ -107,14 +144,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final short rect_height = (short) (screen_width / 60);
         View hintView = getLayoutInflater().inflate(R.layout.header_of_spinner, null, false);
         TextView title = hintView.findViewById(R.id.title);
+        AppCompatImageView back = hintView.findViewById(R.id.back);
         View rect = hintView.findViewById(R.id.rect);
-
 
         ((RelativeLayout.LayoutParams) rect.getLayoutParams()).height = rect_height;
         rect.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
-        ((RelativeLayout.LayoutParams) title.getLayoutParams()).setMargins(margins, margins , margins, margins);
+        ((RelativeLayout.LayoutParams) title.getLayoutParams()).setMargins(margins, margins, margins, margins);
         hintView.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
         title.setTextSize(TypedValue.COMPLEX_UNIT_PX, label_text_size);
+        ((RelativeLayout.LayoutParams) back.getLayoutParams()).setMargins(margins, 0, margins, 0);
+        back.setOnClickListener(this);
+
+        switch (current_node) {
+            case 0:
+                back.setVisibility(View.GONE);
+                break;
+            default:
+                back.setVisibility(View.VISIBLE);
+                break;
+        }
         return hintView;
     }
 
@@ -125,6 +173,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //If your set null to error status will cancel.
                 spinner.setError(TextUtils.isEmpty(spinner.getError()) ? "begin error end" :
                         "begin error error error error error error error error error error error end");
+                break;
+            case R.id.back:
+                //Back to first level class.
+                current_node--;
+                fetchData();
+                //Reset drop down hint view.
+                spinner.setDropDownHintView(getHintView());
                 break;
         }
     }

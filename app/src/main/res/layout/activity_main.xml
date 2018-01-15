@@ -28,6 +28,7 @@
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:j_fls_recursive="true"
                 app:j_fls_textColorHint="@android:color/holo_orange_light" />
 
             <View
