@@ -17,7 +17,7 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.4'
+	compile 'com.github.james602152002:FloatingLabelSpinner:1.1.5'
 }
 ```
 
