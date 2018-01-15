@@ -95,7 +95,7 @@ dependencies {
             //dismiss dialog while recursive mode
             dismiss()
             //notify datasetchanged while recursive mode
-            notifyDataSetChanged()
+            notifyDataSetChanged()/>
 	
 ```
 
