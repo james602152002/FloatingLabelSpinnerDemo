@@ -56,7 +56,9 @@ dependencies {
           //float animation duration(unit：ms)
           app:j_fls_float_anim_duration="800"
           //scrolling text animation duration(unit：ms)
-          app:j_fls_error_anim_duration="8000"/>
+          app:j_fls_error_anim_duration="8000"
+          //open recursive mode(false to close)
+          app:j_fls_recursive="true"
           
 ```
 
@@ -84,6 +86,16 @@ dependencies {
 	spinner.setDropDownHintView(View view);
 	//set error text(null for cancel error status)
 	setError(String error);
+	//set float animation duration(unit：ms)
+        	setAnimDuration(short duration)
+        	//set scrolling text animation duration(unit：ms)
+        	setErrorAnimDuration(short duration)
+        	//set recursive mode, if you have many level data to fetch , you can set it true.
+            setRecursive_mode(boolean recursive_mode)
+            //dismiss dialog while recursive mode
+            dismiss()
+            //notify datasetchanged while recursive mode
+            notifyDataSetChanged()
 	
 ```
 
