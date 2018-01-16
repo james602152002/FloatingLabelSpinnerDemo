@@ -3,6 +3,12 @@
 ## Reference
 [FloatingLabelSpinner](https://github.com/james602152002/FloatingLabelSpinner)
 
+## Demonstration
+
+|Recursive Mode Spinner|
+|:---:|
+|![](art/demo.gif)|
+
 ## Dependency
 
 ```
