@@ -31,8 +31,6 @@ dependencies {
 
 ```xml
 <com.james602152002.floatinglabelspinner.FloatingLabelSpinner
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
           //floating label and hint text color
           app:j_fls_textColorHint="@android:color/holo_orange_light" 
           //divider color
@@ -64,7 +62,7 @@ dependencies {
           //scrolling text animation duration(unit：ms)
           app:j_fls_error_anim_duration="8000"
           //open recursive mode(false to close)
-          app:j_fls_recursive="true"
+          app:j_fls_recursive="true"/>
           
 ```
 
